@@ -9,6 +9,10 @@ import type { Grant } from '../types'
 
 const TODAY = new Date(2026, 8, 26)
 
+// Some integration-like tests can take longer (DOM interactions, userEvent).
+// Increase default timeout for this file so Vitest doesn't fail on slow CI runners.
+vi.setTimeout(20000)
+
 async function fillProfile(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByRole('tab', { name: /^Klienci/ }))
   // na początku tabela klientów (pusta), ankieta dopiero po kliknięciu
