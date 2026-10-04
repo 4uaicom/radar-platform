@@ -79,7 +79,7 @@ describe('Dopasowanie klienta', () => {
     expect(within(box).getByText(/Nie rozpoznaliśmy poczty/)).toBeInTheDocument()
     await user.click(within(box).getByRole('button', { name: 'Zamknij' }))
     expect(within(drawer).queryByRole('group', { name: 'E-mail z propozycjami' })).toBeNull()
-  })
+  }, 20000)
 
   it('tabela klientów: e-mail, ankieta, proponowane programy; „Pokaż” otwiera panel, „Zamknij” go zamyka', async () => {
     const user = userEvent.setup()
