@@ -19,6 +19,12 @@ jobs:
       - name: Install dependencies (apps/web)
         working-directory: apps/web
         run: npm ci
+      - name: Lint (apps/web)
+        working-directory: apps/web
+        run: npm run lint --if-present
+      - name: Build (apps/web)
+        working-directory: apps/web
+        run: npm run build --if-present
       - name: Run tests (apps/web)
         working-directory: apps/web
         run: npm test --silent
