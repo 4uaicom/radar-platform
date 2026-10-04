@@ -31,3 +31,29 @@
 - [ ] sprawdzenie logów
 - [ ] sprawdzenie wydajności i błędów
 - [ ] potwierdzenie, że klienci mogą normalnie pracować
+
+## Quick commands
+
+- Run web tests:
+
+```bash
+cd apps/web
+npm ci
+npm test
+```
+
+- Run migrations (local):
+
+```bash
+for f in supabase/migrations/*.sql; do psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f "$f"; done
+psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f supabase/seed_demo.sql
+```
+
+## Release notes template
+
+- **Release:** vX.Y.Z
+- **Date:** YYYY-MM-DD
+- **Summary:** Short paragraph about changes
+- **Migration notes:** list manual steps and breaking changes
+- **Testing performed:** unit/e2e/manual checks
+
