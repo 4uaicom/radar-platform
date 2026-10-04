@@ -1,0 +1,43 @@
+name: Supabase Migrations & Seed
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'supabase/**'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    name: Run migrations and seed on Supabase
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Verify connection string
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then echo "SUPABASE_DB_URL secret is not set"; exit 1; fi
+          echo "Connection string provided"
+
+      - name: Apply SQL migrations
+        run: |
+          set -euo pipefail
+          for f in supabase/migrations/*.sql; do
+            echo "Applying $f"
+            psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f "$f"
+          done
+
+      - name: Apply seed (demo)
+        run: |
+          echo "Applying supabase/seed_demo.sql"
+          psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f supabase/seed_demo.sql
+
+      - name: Done
+        run: echo "Migrations and seed applied"
